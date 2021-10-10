@@ -18,18 +18,12 @@ from django.urls import path, include
 
 from products.views import (
     apiOverview,
-    productCreateView,
-    productDetailView,
-    productUpdateView,
-    productView,
+    
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', apiOverview, name='api-Overview'),
-    path('task/', productView, name='Product-List'),
-    path('task/<int:pk>/', productDetailView, name='Product-Detail-View'),
-    path('create/', productCreateView, name='Create-Product'),
-    path('update/<int:pk>/', productUpdateView, name='Update-Product'),
+    path('', include('products.urls'))
 ]

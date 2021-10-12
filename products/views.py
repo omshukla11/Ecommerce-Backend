@@ -13,10 +13,8 @@ from products.serializers import ProductSerializer
 @api_view(['GET'])
 def apiOverview(request):
     api_urls = {
-        'Sales':'/sales/',
-        'Detail View': '/sales/<int:id>/',
-        'New Sale': '/new-sale/',
-        'Update Sale': '/update-sale/<int:id>/'
+        'Task List':'/task/',
+        'Detail View': '/task/<int:pk>/',
     }
     return Response(api_urls)
 

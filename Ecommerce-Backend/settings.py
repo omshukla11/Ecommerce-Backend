@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #REST
+    #REST & CORS
     'rest_framework',
+    'corsheaders',
 
     #own
     'products',
@@ -48,6 +49,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    #Cors addition
+    'corsheaders.middleware.CorsMiddleware',
+    # End
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -55,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'salestracker.urls'
+ROOT_URLCONF = 'Ecommerce-Backend.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'salestracker.wsgi.application'
+WSGI_APPLICATION = 'Ecommerce-Backend.wsgi.application'
 
 
 # Database
@@ -129,3 +133,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]

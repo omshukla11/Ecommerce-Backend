@@ -20,6 +20,7 @@ class Product(models.Model):
     soldon      = models.DateTimeField()
     instock     = models.IntegerField()
     category    = models.CharField(max_length=4, choices=Cats, blank=True)
+    product_img = models.ImageField(default='default.jpg', upload_to='image/')
 
     def __str__(self):
         return self.name

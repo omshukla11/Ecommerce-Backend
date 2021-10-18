@@ -97,7 +97,7 @@ class ProductList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.Gener
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ProductDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
-    product = Product.objects.all()
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
     def get(self, request, *args, **kwargs):

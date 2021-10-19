@@ -2,9 +2,9 @@ from django.http.response import Http404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import (serializers, status, mixins, generics)
-from products.models import Product
-from products.serializers import ProductSerializer
+from rest_framework import ( mixins, generics, status)
+from products.models import Categories, Product
+from products.serializers import CategorySerializer, ProductSerializer
 
 # Create your views here.
 
@@ -21,9 +21,12 @@ def apiOverview(request):
 @api_view(['GET'])
 def CategoryList(request):
     api_urls = {
-        'Electronics': 'Elec',
-        'MCol': "Men's Fashion",
-        'FCol': "Women's Fashion",
+        'MoCo': "Mobiles & Computers",
+        'TVAE': "TV, Appliances & Electronics",
+        'MFas': "Men's Fashion",
+        'WFas': "Women's Fashion",
+        'Book': "Books",
+        'Kitc': "Kitchen"
     }
     return Response(api_urls)
 
@@ -118,5 +121,27 @@ class ProductDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
+class CategoriesList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Categories.objects.all()
+    serializer_class = CategorySerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
+class CategoryItemsList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        id = Categories.objects.filter(short=self.kwargs['pk'])
+        print(id[0])
+        return Product.objects.filter(category=id[0])
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)

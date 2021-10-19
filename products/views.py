@@ -19,6 +19,15 @@ def apiOverview(request):
     return Response(api_urls)
 
 @api_view(['GET'])
+def CategoryList(request):
+    api_urls = {
+        'Electronics': 'Elec',
+        'MCol': "Men's Fashion",
+        'FCol': "Women's Fashion",
+    }
+    return Response(api_urls)
+
+@api_view(['GET'])
 def productView(request):
     instance = Product.objects.all()
     serializer = ProductSerializer(instance, many=True)
@@ -108,4 +117,6 @@ class ProductDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+
 

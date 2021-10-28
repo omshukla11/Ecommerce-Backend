@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework import ( mixins, generics, status)
 from products.models import Categories, Product
 from products.serializers import CategorySerializer, ProductSerializer
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated, IsAdminUser
 
 # Create your views here.
 
@@ -22,7 +24,7 @@ def apiOverview(request):
 def CategoryList(request):
     api_urls = {
         'MoCo': "Mobiles & Computers",
-        'TVAE': "TV, Appliances & Electronics",
+        'TVAE': "Electronics",
         'MFas': "Men's Fashion",
         'WFas': "Women's Fashion",
         'Book': "Books",
@@ -76,14 +78,25 @@ def productUpdateView(request, pk):
 #             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(data=serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
+class CustomPermission(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'GET':
+            return True
+        return False
+
 class ProductList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
 
     def get(self, request, *args, **kwargs):
+        print(request.user, 'here')
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        print(request.user, 'here')
         return self.create(request, *args, **kwargs)
 
 # class ProductDetail(APIView):
@@ -137,8 +150,20 @@ class CategoryItemsList(mixins.ListModelMixin, mixins.CreateModelMixin, generics
 
     def get_queryset(self):
         id = Categories.objects.filter(short=self.kwargs['pk'])
-        print(id[0])
         return Product.objects.filter(category=id[0])
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+class SubCategoryList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    serializer_class = CategorySerializer
+
+    def get_queryset(self):
+        return Categories.objects.filter(parent=self.kwargs['pk'])
+
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

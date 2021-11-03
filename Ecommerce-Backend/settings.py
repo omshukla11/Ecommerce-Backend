@@ -46,8 +46,8 @@ INSTALLED_APPS = [
 
     #own
     'products',
-    'cart',
     'accounts',
+    'orders',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -153,3 +153,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER= 'djangodummy8000@gmail.com'
+EMAIL_HOST_PASSWORD = 'djangoadmin'
+FRONT_END_HOST="http://localhost:3000"

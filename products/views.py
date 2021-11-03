@@ -87,16 +87,14 @@ class CustomPermission(BasePermission):
 class ProductList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    # authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication] 
     permission_classes = [IsAuthenticated]
     
 
     def get(self, request, *args, **kwargs):
-        print(request.user, 'here')
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print(request.user, 'here')
         return self.create(request, *args, **kwargs)
 
 # class ProductDetail(APIView):

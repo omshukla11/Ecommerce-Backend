@@ -5,7 +5,7 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 
 
 class UserManager(BaseUserManager):
-    def create_superuser(self, email, password=None, is_active=True, is_staff=True, is_admin=True):
+    def create_superuser(self, email, password=None ,is_active=True, is_staff=True, is_admin=True, **other):
         if not email:
             raise ValueError("User must have an email address")
         if not password:
@@ -33,7 +33,8 @@ class UserManager(BaseUserManager):
             email,
             password=password,
             is_admin=False,
-            is_staff=False
+            is_staff=False,
+            is_active=False
         )
         return user
 
@@ -48,6 +49,7 @@ class User(AbstractBaseUser):
     active    = models.BooleanField(default=True)
     staff     = models.BooleanField(default=False)
     admin     = models.BooleanField(default=False)
+    profile_pic = models.ImageField(default='default.jpg', upload_to='userprofilepics/')
 
     USERNAME_FIELD = 'email'
 

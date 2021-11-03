@@ -35,7 +35,7 @@ class Product(models.Model):
     featured    = models.BooleanField(blank=False)
     instock     = models.IntegerField()
     product_img = models.ImageField(default='default.jpg', upload_to='image/')
-    category    = models.ManyToManyField(Categories)
+    category    = models.ManyToManyField(Categories, blank=True)
     
 
     def __str__(self):
